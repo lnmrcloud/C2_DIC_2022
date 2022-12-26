@@ -1,0 +1,28 @@
+a = 123
+b = 123 + 123
+c = 321 / 123
+d = "hola"
+e = "hOLa" * 3
+f = "hola" + "buenas";
+g = 123.123 * 123.321
+h = False
+i = True
+j = (False or True and False) or (True and (True or False))
+k = 4 ** 3
+l = 5 % 2
+m = 123 <= 3
+print(a)
+print(b)
+print(c)
+print(d)
+print(e)
+print(e.lower())
+print(e.upper())
+print(f)
+print(g)
+print(h)
+print(i)
+print(j)
+print(k)
+print(l)
+print(m)

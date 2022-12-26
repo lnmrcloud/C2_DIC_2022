@@ -1,0 +1,92 @@
+var hola=5;
+var global="adios"
+main()
+{
+    for(hola=1;hola<5;hola++){
+        print(hola)
+        if(hola==3){
+            print("Soy un tres");
+        }else if(hola==4){
+            var adios=0+hola;
+            switch(adios+1){
+            case 4:
+            print(":Pregunta Trampa")
+            case 5:
+            print("adios es un 5")
+            break
+            }
+        }
+        else{
+            print("No soy un 3")
+        }
+    }
+}
+
+prueba FUNCIONES
+func sumar(string a,int b){
+print(a+b);
+}
+func holamundo(){
+var hola="Hola "
+var mundo="Mundo"
+return hola + mundo;
+
+}
+main(){
+sumar("2 ",2);
+var hola;
+hola=holaMundo()+" "+ 45;
+print(hola);
+}
+
+#funciones Nativas
+var h1=length("hola ");
+var h2=truncate(4.98);
+var h3 = truncate(25+4/2+3.68);
+var h4 = round(4.5);
+var h5 = round(4.4);
+var h6 = round(4.6);
+var h7 = round(4);
+var h8 = typeof("holis");
+var h9 = typeof(false);
+var h10 = typeof(true);
+var h11 = typeof(5);
+var h12 = typeof(5.45);
+var h13 = typeof('h');
+
+
+print("Respuesta lenght = 5");
+print(h1+"\n");
+print("Respuesta truncate = 4");
+print(h2+"\n");
+print("Respuesta truncate = 30");
+print(h3+"\n");
+print("Respuesta round = 5");
+print(h4+"\n");
+print("Respuesta round = 4");
+print(h5+"\n");
+print("Respuesta round = 5");
+print(h6+"\n");
+print("Respuesta round = 4");
+print(h7+"\n");
+print("Respuesta typeof = string");
+print(h8+"\n");
+print("Respuesta typeof = boolean");
+print(h9+"\n");
+print("Respuesta typeof = boolean");
+print(h10+"\n");
+print("Respuesta typeof = int");
+print(h11+"\n");
+print("Respuesta typeof = double");
+print(h12+"\n");
+print("Respuesta typeof = char");
+print(h13+"\n");
+
+#ARREGLOS
+int[][][] prueba =new int[3][2][1];
+string[][] hola={{"hola"},{"mundo"}};
+print(hola[0][0]+" "+hola[1][0]);
+string[][] adios =hola;
+print(adios);
+adios[0][0]="Adios "
+print(hola);

@@ -1,0 +1,251 @@
+Comentario
+#.*\n
+Comentario Multilinea
+#*(.*|\n)*#
+
+ID
+[a-zA-Z][a-zA-Z_0-9]*
+
+Entero
+d+
+
+Decimal
+d+.d+
+
+Cadena
+".*?"
+
+Caracter
+'(\n|\\|\*|\t|\'|\"|.)'
+
+Caracteres especiales
++       MAS
+-       MENOS
+*       ASTERISCO
+/       DIAGONAL
+\       DIAGONAL INVERSA
+=       Igual
+**    Potencia
+%       Modulo
+==      Igualacion
+=!      Diferenciacion
+<       Menor que
+>       Mayor que
+<=      Menor Igual
+>=      Mayor Igual
+||      OR
+&&      AND
+!       NOT
+;       PUNTO Y Comentario
+{       LLAVE ABRE
+}       LLAVE CIERRA
+(       PARENTESIS ABRE
+)       PARENTESIS CIERRA
+'       COMILLA SIMPLE
+"       COMILLA Double
+++      Incremento
+--      Decremento
+[       CORCHETE ABRE
+]       CORCHETE CIERRA
+
+Palabras reservadas
+var
+Int
+Double
+Boolean
+Char
+String
+true
+false
+Null
+if
+else
+while
+for
+print
+switch
+case
+break
+default
+continue
+return
+func
+read
+tolower
+toupper
+length
+truncate
+round
+typeof
+main
+
+
+Caracteres de escape
+\n
+\\
+\*
+\t
+\'
+\"
+
+Var id;
+var id=id;
+var id=primitivo;
+var id=id+primitivo;
+var id = id +id
+id = id +id
+
+GRAMATICA
+iniciar : inicio
+
+inicio :    inicio instrucciones   
+                | instrucciones 
+
+instrucciones : VAR ID asignacionesprima final
+                | ID asignacionesMento final
+                | PRINT PARA asignaciones PARC final
+                | MAIN PARA PARC LLAVEA dentro LLAVEC
+                | FUNC ID PARA parametros PARC LLAVEA dentro LLAVEC
+                | tipodato listaDim ID IGUAL NEW tipodato lista_expresiones final
+                | tipodato listaDim ID IGUAL asignaciones final
+                | ID lista_expresiones IGUAL asignaciones final
+                | empty
+                | error finalerror               
+
+listaDim :  listaDim CORA CORC
+                | CORA CORC
+
+lista_expresiones : lista_expresiones CORA asignaciones CORC
+                        | CORA asignaciones CORC
+
+parametros :    tipodato ID parametrosPrima
+                | empty
+
+parametrosPrima :   COMA tipodato ID parametrosPrima
+                        | empty
+
+dentro :    dentro instruccionesdentro   
+                | instruccionesdentro 
+
+instruccionesdentro :   VAR ID asignacionesprima final
+                        | ID asignacionesMento final
+                        | PRINT PARA asignaciones PARC final
+                        | IF PARA asignaciones PARC LLAVEA dentro LLAVEC elseInstruccion
+                        | RETURN returnasignaciones final
+                        | BREAK final
+                        | CONTINUE final
+                        | SWITCH PARA asignaciones PARC LLAVEA caseslist finalswitch 
+                        | WHILE PARA asignaciones PARC LLAVEA dentro LLAVEC
+                        | FOR PARA asigdeclafor PTCOMA asignaciones PTCOMA asignacionfor PARC LLAVEA dentro LLAVEC
+                        | ID PARA parametrosllamada PARC final
+                        | tipodato listaDim ID IGUAL NEW tipodato lista_expresiones final
+                        | tipodato listaDim ID IGUAL asignaciones final
+                        | ID lista_expresiones IGUAL asignaciones final
+                        | empty
+                        | error finalerror                           
+
+returnasignaciones :    asignaciones
+                        | empty
+
+asigdeclafor :  VAR ID IGUAL asignaciones                        
+                | ID asignacionesMento
+
+asignacionfor : ID asignacionesMento
+
+caseslist : caseslist cases 
+                | cases
+
+cases : CASE asignaciones DOSPUNTOS dentro
+        | empty
+
+casesdefault :  DEFAULT DOSPUNTOS dentro 
+                | empty
+
+finalswitch :   casesdefault LLAVEC
+                | LLAVEC
+
+elseInstruccion :   ELSE elseifInstruccion
+                        | empty
+
+elseifInstruccion : IF PARA asignaciones PARC LLAVEA dentro LLAVEC elseInstruccion
+                        | LLAVEA dentro LLAVEC 
+
+asignacionesMento : IGUAL asignaciones
+                        | INCREMENTO
+                        | DECREMENTO
+
+asignacionesprima :  IGUAL asignaciones
+
+asignacionesprima :  empty
+
+asignaciones :  asignaciones MAS asignaciones
+                | asignaciones MENOS asignaciones
+                | asignaciones ASTERISCO asignaciones
+                | asignaciones DIAGONAL asignaciones
+                | asignaciones MODULO asignaciones
+                | asignaciones POTENCIA asignaciones
+                | asignaciones IGUALACION asignaciones 
+                | asignaciones DIFERENCIACION asignaciones 
+                | asignaciones MENORQUE asignaciones 
+                | asignaciones MAYORQUE asignaciones 
+                | asignaciones MENORIGUAL asignaciones 
+                | asignaciones MAYORIGUAL asignaciones 
+                | asignaciones AND asignaciones 
+                | asignaciones OR asignaciones 
+                | MENOS asignaciones %prec UMENOS
+                | NOT asignaciones %prec UNOT
+                | PARA asignaciones PARC
+                | variables
+                | TOUPPER PARA asignaciones PARC
+                | TOLOWER PARA asignaciones PARC
+                | READ PARA PARC
+                | LENGTH PARA asignaciones PARC
+                | ROUND PARA asignaciones PARC
+                | TRUNCATE PARA asignaciones PARC
+                | TYPEOF PARA asignaciones PARC
+                | PARA tipodato PARC asignaciones 
+                | ID lista_expresiones
+
+variables : ID llamadas 
+                | ID PARA parametrosllamada PARC
+                | primitivo
+                
+parametrosllamada : asignaciones parametrosllamadaprima
+                        | empty
+
+parametrosllamadaprima :    COMA asignaciones parametrosllamadaprima
+                                | empty
+
+llamadas :  DECREMENTO
+                | INCREMENTO      
+                | empty     
+
+empty : Ɛ
+
+tipodato :  STRING
+                | INT
+                | CHAR
+                | BOOLEAN
+                | DOUBLE
+
+primitivo : ENTERO               
+                | DECIMAL               
+                | CADENA
+                | CARACTER     
+                | TRUE
+                | FALSE                
+                | NULL
+                | arregloprimitivo
+
+arregloprimitivo : LLAVEA primitivoarreglo LLAVEC
+
+primitivoarreglo : asignaciones primitivoarregloprima 
+
+primitivoarregloprima : COMA asignaciones primitivoarregloprima 
+                        | empty 
+
+final : PTCOMA
+        |Ɛ
+
+finalerror : PTCOMA
+                | LLAVEC
