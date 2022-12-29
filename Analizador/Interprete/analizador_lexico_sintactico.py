@@ -4,7 +4,7 @@ from ..ply import lex,yacc
 
 #? TABLA DE SIMBOLOS
 
-from .Tabla_de_Simbolos import Error, Tipo, OperadorAritmetico,OperadorRelacional,OperadorLogico,arbol,tabla_simbolos
+from .Tabla_de_Simbolos import Error, TIPO, OperadorAritmetico, OperadorRelacional ,OperadorLogico,Arbol, TablaSimbolos
 
 #? MANEJO DE DATOS
 
@@ -40,8 +40,8 @@ class LexicoSintactico(object):
         "str" :"STRING",
         "int" : "INT",
         "float" : "FLOAT",
-        "True" : "TRUE",
-        "False" : "FALSE",
+        "true" : "TRUE",
+        "false" : "FALSE",
         "if" : "IF",
         "elif" : "ELSEIF",
         "else" : "ELSE",
@@ -68,13 +68,13 @@ class LexicoSintactico(object):
 
     tokens = [
         "ID",
+        "LINEANUEVA",
         "CADENA",
         "ENTERO",
         "DECIMAL",
         "PUNTO",
         "COMA",
         "DOSPUNTOS",
-        "NUEVALINEA",
         "PARENTESIS_IZQ",
         "PARENTESIS_DER",
         "CORCHETE_IZQ",
@@ -93,7 +93,8 @@ class LexicoSintactico(object):
         "MENOR_IGUAL_QUE",
         "MAYOR_IGUAL_QUE",
         "IGUAL_QUE",
-        "DIFERENTE_QUE"
+        "DIFERENTE_QUE",
+        "COMILLAS"
     ] + list(reservadas.values())
 
     #tokens
@@ -101,7 +102,7 @@ class LexicoSintactico(object):
     t_PUNTO = r'\.'
     t_COMA = r','
     t_DOSPUNTOS = r':'
-    t_NUEVALINEA = r'\n'
+    t_LINEANUEVA = r'\n'
     t_PARENTESIS_IZQ = r'\('
     t_PARENTESIS_DER = r'\)'
     t_CORCHETE_IZQ = r'\['
@@ -121,6 +122,7 @@ class LexicoSintactico(object):
     t_MAYOR_IGUAL_QUE = r'>='
     t_IGUAL_QUE= r'=='
     t_DIFERENTE_QUE = r'!='
+    t_COMILLAS = r'\"'
 
     def t_ID(self,t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -129,9 +131,11 @@ class LexicoSintactico(object):
         return t
 
     def t_CADENA(self,t):
-        r'\".*?\"'
+        #r'\".*?\"'
+        r'\"(\\[nN]|\\\\|\\\*|\\[tT]|\\\'|\\\"|[^\\\"\'])*?\"'
         # Se quitan comillas - 1
-        t.value = t.value[1:-1] 
+        t.value = t.value[1:-1]
+        #t.value = t.value 
         return t
 
     def t_ENTERO(self,t):
@@ -167,16 +171,10 @@ class LexicoSintactico(object):
     # Caracteres ignorados
     t_ignore = " \t"
 
-    def t_newline(self,t):
-        r'\n'
-        t.lexer.lineno += t.value.count("\n")
-
     def t_error(self,t): #LEXICOS
         self.errores.append(Error("Lexico","Error lexico en "+t.value[0],t.lexer.lineno,self.find_column(self.input,t)))
         
         t.lexer.skip(1)    
-
-
     
     # Precedencia
 
@@ -186,38 +184,27 @@ class LexicoSintactico(object):
         ('left', 'IGUAL_QUE', 'DIFERENTE_QUE'),
         ('left', 'MAYOR_QUE', 'MENOR_QUE', 'MAYOR_IGUAL_QUE', 'MENOR_IGUAL_QUE'),
         ('left', 'MAS', 'MENOS'),
-        ('left', 'POR', 'DIVISON', 'MODULO'),
+        ('left', 'POR', 'DIVISION', 'MODULO'),
         ('left', 'POTENCIA'),
         ('right', 'UMENOS')
     )
 
     # Definicion de la gramatica
-    
-    #    ? VISTA GENERAL:
-    #    inicio :  instrucciones 
 
-    def p_init(t):
+    def p_init(self,t):
         '''init            : instrucciones'''
-       # t[0] = t[1]
+        t[0]=t[1]
 
-
-    #    ? VISTA GENERAL:
-    #    instrucciones :  instrucciones instruccion
-    #                   | instruccion
-
-
-    def p_instrucciones_lista(t):
+    def p_instrucciones_lista(self,t):
         '''instrucciones    : instrucciones instruccion
                             | instruccion'''
-       # if (len(t) != 2):
-       #     t[1].append(t[2])
-       #     t[0] = t[1]
-       # else:
-       #     t[0] = [t[1]]
+        if (len(t) != 2):
+            t[1].append(t[2])
+            t[0] = t[1]
+        else:
+            t[0] = [t[1]]
 
-
-
-    def p_instruccion(t):
+    def p_instruccion(self,t):
         '''instruccion      : print_instr LINEANUEVA
                             | println_instr LINEANUEVA
                             | asignacion_instr LINEANUEVA
@@ -235,23 +222,21 @@ class LexicoSintactico(object):
                             | expression LINEANUEVA'''
         t[0] = t[1]
 
-
-
-    def p_expression(t):
+    def p_expression(self,t):
         '''expression       : MENOS expression %prec UMENOS
                             | NOT expression %prec UMENOS
                             | expression MAS expression
                             | expression MENOS expression
                             | expression POR expression
-                            | expression DIVIDIDO expression
+                            | expression DIVISION expression
                             | expression POTENCIA expression
                             | expression MODULO expression
-                            | expression MAYQUE expression
-                            | expression MENQUE expression
-                            | expression MENIGUALQUE expression
-                            | expression MAYIGUALQUE expression
-                            | expression IGUALQUE expression
-                            | expression NIGUALQUE expression
+                            | expression MAYOR_QUE expression
+                            | expression MENOR_QUE expression
+                            | expression MENOR_IGUAL_QUE expression
+                            | expression MAYOR_IGUAL_QUE expression
+                            | expression IGUAL_QUE expression
+                            | expression DIFERENTE_QUE expression
                             | expression OR expression
                             | expression AND expression
                             | final_expression'''
@@ -259,57 +244,59 @@ class LexicoSintactico(object):
             t[0] = t[1]
         elif (len(t)==3):
             if(t[1] == '-'):
-                t[0] = Arithmetic(Literal(0,Type.INT, t.lineno(1), t.lexpos(0)),t[2],ArithmeticOption.MINUS,t.lineno(1), t.lexpos(0))
+                #t[0] = Arithmetic(Literal(0,Type.INT, t.lineno(1), t.lexpos(0)),t[2],ArithmeticOption.MINUS,t.lineno(1), t.lexpos(0))
+                t[0] = Aritmetica(OperadorAritmetico.UMENOS, t[2],None, t.lineno(1), self.find_column(self.input, t.slice[1]))
             else:
-                t[0] = Logical(t[2],Literal(True, Type.BOOL, t.lineno(1), t.lexpos(0)),LogicOption.NOT, t.lineno(1), t.lexpos(0))
+                #t[0] = Logical(t[2],Literal(True, Type.BOOL, t.lineno(1), t.lexpos(0)),LogicOption.NOT, t.lineno(1), t.lexpos(0))
+                t[0] = Logica(OperadorLogico.NOT, t[2],None, t.lineno(1), self.find_column(self.input, t.slice[1]))
         else:
             if t[2] == "+":
-                t[0] = Arithmetic(t[1], t[3], ArithmeticOption.PLUS,
-                                t.lineno(1), t.lexpos(0))
+                #t[0] = Arithmetic(t[1], t[3], ArithmeticOption.PLUS,t.lineno(1), t.lexpos(0))
+                t[0] = Aritmetica(OperadorAritmetico.MAS, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == "-":
-                t[0] = Arithmetic(
-                    t[1], t[3], ArithmeticOption.MINUS, t.lineno(1), t.lexpos(0))
+                #t[0] = Arithmetic(t[1], t[3], ArithmeticOption.MINUS, t.lineno(1), t.lexpos(0))
+                t[0] = Aritmetica(OperadorAritmetico.MENOS, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == "*":
-                t[0] = Arithmetic(
-                    t[1], t[3], ArithmeticOption.TIMES, t.lineno(1), t.lexpos(0))
+                #t[0] = Arithmetic(t[1], t[3], ArithmeticOption.TIMES, t.lineno(1), t.lexpos(0))
+                t[0] = Aritmetica(OperadorAritmetico.ASTERISCO, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == "/":
-                t[0] = Arithmetic(t[1], t[3], ArithmeticOption.DIV,
-                                t.lineno(1), t.lexpos(0))
+                #t[0] = Arithmetic(t[1], t[3], ArithmeticOption.DIV,t.lineno(1), t.lexpos(0))
+                t[0] = Aritmetica(OperadorAritmetico.DIAGONAL, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == "^":
-                t[0] = Arithmetic(t[1], t[3], ArithmeticOption.RAISED,
-                                t.lineno(1), t.lexpos(0))
+                #t[0] = Arithmetic(t[1], t[3], ArithmeticOption.RAISED,t.lineno(1), t.lexpos(0))
+                t[0] = Aritmetica(OperadorAritmetico.POTENCIA, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == "%":
-                t[0] = Arithmetic(
-                    t[1], t[3], ArithmeticOption.MODULE, t.lineno(1), t.lexpos(0))
+                #t[0] = Arithmetic(t[1], t[3], ArithmeticOption.MODULE, t.lineno(1), t.lexpos(0))
+                t[0] = Aritmetica(OperadorAritmetico.MODULO, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == "or":
-                t[0] = Logical(t[1], t[3], LogicOption.OR,
-                            t.lineno(1), t.lexpos(0))
+                #t[0] = Logical(t[1], t[3], LogicOption.OR,t.lineno(1), t.lexpos(0))
+                t[0] = Logica(OperadorLogico.OR, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == "and":
-                t[0] = Logical(t[1], t[3], LogicOption.AND,
-                            t.lineno(1), t.lexpos(0))
+                #t[0] = Logical(t[1], t[3], LogicOption.AND,t.lineno(1), t.lexpos(0))
+                t[0] = Logica(OperadorLogico.AND, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == "<":
-                t[0] = Relational(t[1], t[3], RelationalOption.LESS,
-                                t.lineno(1), t.lexpos(0))
+                #t[0] = Relational(t[1], t[3], RelationalOption.LESS,t.lineno(1), t.lexpos(0))
+                t[0] = Relacional(OperadorRelacional.MENORQUE, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == ">":
-                t[0] = Relational(
-                    t[1], t[3], RelationalOption.GREATER, t.lineno(1), t.lexpos(0))
+                #t[0] = Relational(t[1], t[3], RelationalOption.GREATER, t.lineno(1), t.lexpos(0))
+                t[0] = Relacional(OperadorRelacional.MAYORQUE, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == "<=":
-                t[0] = Relational(
-                    t[1], t[3], RelationalOption.LESSEQUAL, t.lineno(1), t.lexpos(0))
+                #t[0] = Relational(t[1], t[3], RelationalOption.LESSEQUAL, t.lineno(1), t.lexpos(0))
+                t[0] = Relacional(OperadorRelacional.MENORIGUAL, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == ">=":
-                t[0] = Relational(
-                    t[1], t[3], RelationalOption.GREATEREQUAL, t.lineno(1), t.lexpos(0))
+                #t[0] = Relational(t[1], t[3], RelationalOption.GREATEREQUAL, t.lineno(1), t.lexpos(0))
+                t[0] = Relacional(OperadorRelacional.MAYORIGUAL, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == "==":
-                t[0] = Relational(t[1], t[3], RelationalOption.EQUAL,
-                                t.lineno(1), t.lexpos(0))
+                #t[0] = Relational(t[1], t[3], RelationalOption.EQUAL,t.lineno(1), t.lexpos(0))
+                t[0] = Relacional(OperadorRelacional.IGUALACION, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
             elif t[2] == "!=":
-                t[0] = Relational(
-                    t[1], t[3], RelationalOption.DISTINCT, t.lineno(1), t.lexpos(0))
+                #t[0] = Relational(t[1], t[3], RelationalOption.DISTINCT, t.lineno(1), t.lexpos(0))
+                t[0] = Relacional(OperadorRelacional.DIFERENCIACION, t[1],t[3], t.lineno(2), self.find_column(self.input, t.slice[2]))
 
 
-    def p_final_expression(t):
-        '''final_expression     : PARIZQ expression PARDER
-                                | CORCHETEIZQ exp_list CORCHETEDER
+    def p_final_expression(self,t):
+        '''final_expression     : PARENTESIS_IZQ expression PARENTESIS_DER
+                                | CORCHETE_IZQ exp_list CORCHETE_DER
                                 | DECIMAL
                                 | ENTERO
                                 | CADENA
@@ -321,77 +308,107 @@ class LexicoSintactico(object):
                                 | nativas'''
         if len(t) == 2:
             if t.slice[1].type == "ENTERO":
-                t[0] = Literal(t[1], Type.INT, t.lineno(1), t.lexpos(0))
+                #t[0] = Literal(t[1], Type.INT, t.lineno(1), t.lexpos(0))
+                t[0] = Primitivos(TIPO.ENTERO, t[1], t.lineno(1), self.find_column(self.input, t.slice[1]))
             if t.slice[1].type == "DECIMAL":
-                t[0] = Literal(t[1], Type.FLOAT, t.lineno(1), t.lexpos(0))
+                #t[0] = Literal(t[1], Type.FLOAT, t.lineno(1), t.lexpos(0))
+                t[0] = Primitivos(TIPO.FLOAT, t[1], t.lineno(1), self.find_column(self.input, t.slice[1]))
             elif t.slice[1].type == "FALSE":
-                t[0] = Literal(False, Type.BOOL, t.lineno(1), t.lexpos(0))
+                #t[0] = Literal(False, Type.BOOL, t.lineno(1), t.lexpos(0))
+                t[0] = Primitivos(TIPO.BOOLEANO, False, t.lineno(1), self.find_column(self.input, t.slice[1]))
             elif t.slice[1].type == "TRUE":
-                t[0] = Literal(True, Type.BOOL, t.lineno(1), t.lexpos(0))
+                #t[0] = Literal(True, Type.BOOL, t.lineno(1), t.lexpos(0))
+                t[0] = Primitivos(TIPO.BOOLEANO, True, t.lineno(1), self.find_column(self.input, t.slice[1]))
             elif t.slice[1].type == "CADENA":
-                t[0] = Literal(str(t[1]), Type.STRING, t.lineno(1), t.lexpos(0))
+                #t[0] = Literal(str(t[1]), Type.STRING, t.lineno(1), t.lexpos(0))
+                cadena=str(t[1])
+                cadena=cadena.replace('\\\\','\\')
+                cadena=cadena.replace('\\\'','\'')
+                cadena=cadena.replace('\\n','\n')
+                cadena=cadena.replace('\\N','\n')
+                cadena=cadena.replace('\\t','\t')
+                cadena=cadena.replace('\\T','\t')
+                cadena=cadena.replace('\\\"','\"')
+                t[0] = Primitivos(TIPO.CADENA,cadena, t.lineno(1), self.find_column(self.input, t.slice[1]))
             elif t.slice[1].type == 'ID':
-                t[0] = Access(t[1], t.lineno(1), t.lexpos(0))
+                #t[0] = Access(t[1], t.lineno(1), t.lexpos(0))
+                t[0] = Identificador(t[1].lower(), t.lineno(1), self.find_column(input, t.slice[1]))
             elif t.slice[1].type == 'nativas':
                 t[0] = t[1]
             elif t.slice[1].type == 'call_function':
                 t[0] = t[1]
         else:
-            if t.slice[1].type == "PARIZQ":
+            if t.slice[1].type == "PARENTESIS_IZQ":
                 t[0] = t[2]
             else:
                 t[0] = Literal(t[2], Type.LIST, t.lineno(1), t.lexpos(0))
+                #Lista de variables
 
-    def p_nativas(t):
-        '''nativas          : UPPER PARIZQ expression PARDER
-                            | LOWER PARIZQ expression PARDER
-                            | STR PARIZQ expression PARDER
-                            | FLOAT PARIZQ expression PARDER
-                            | LEN PARIZQ expression PARDER
+    def p_nativas(self,t):
+        '''nativas          : UPPER PARENTESIS_IZQ expression PARENTESIS_DER
+                            | LOWER PARENTESIS_IZQ expression PARENTESIS_DER
+                            | STRING PARENTESIS_IZQ expression PARENTESIS_DER
+                            | FLOAT PARENTESIS_IZQ expression PARENTESIS_DER
+                            | LEN PARENTESIS_IZQ expression PARENTESIS_DER
                             '''
         if(t.slice[1].type == "UPPER"):
-            t[0] = Upper(t[3], t.lineno(1), t.lexpos(0))        
+            t[0]=ToUpper(t[3],t.lineno(1),self.find_column(self.input,t.slice[1]))       
         elif(t.slice[1].type == 'LOWER'):
-            t[0] = Lower(t[3], t.lineno(1), t.lexpos(0))
+            t[0]=ToLower(t[3],t.lineno(1),self.find_column(self.input,t.slice[1]))
         elif(t.slice[1].type == 'LEN'):
-            t[0] = Len(t.lineno(1), t.lexpos(0), t[3])
+            t[0]=Length(t[3],t.lineno(1),self.find_column(self.input,t.slice[1]))
 
-    def p_print_instr(t):
-        'print_instr    : PRINT PARIZQ exp_list PARDER'
-        t[0] = Print(t[3], t.lineno(1), t.lexpos(0), False)
+    def p_print_instr(self,t):
+        #'print_instr    : PRINT PARENTESIS_IZQ exp_list PARENTESIS_DER'
+        'print_instr    : PRINT PARENTESIS_IZQ expression PARENTESIS_DER'
+        t[0] = Print(t[3], t.lineno(3), self.find_column(self.input, t.slice[1]))
 
-    def p_println_instr(t):
-        'println_instr  : PRINTLN PARIZQ exp_list PARDER'
-        t[0] = Print(t[3], t.lineno(1), t.lexpos(0), True)
+    def p_println_instr(self,t):
+        #'println_instr  : PRINTLN PARENTESIS_IZQ exp_list PARENTESIS_DER'
+        'println_instr  : PRINTLN PARENTESIS_IZQ expression PARENTESIS_DER'
+        t[0] = Print(t[3], t.lineno(3), self.find_column(self.input, t.slice[1]))
 
-    def p_tipo(t):
+    def p_tipo(self,t):
         '''tipo     : INT
                     | FLOAT
                     | BOOL
-                    | STR
+                    | STRING
                     | NONE
         '''
+        tipo=None
+        if t[1]=="string":
+            tipo=TIPO.CADENA
+        elif t[1]=="char":
+            tipo=TIPO.CARACTER
+        elif t[1]=="boolean":
+            tipo=TIPO.BOOLEANO
+        elif t[1]=="int":
+            tipo=TIPO.ENTERO
+        elif t[1]=="float":
+            tipo=TIPO.FLOAT
+        t[0]=tipo
 
-    def p_asignacion_instr(t):
+    def p_asignacion_instr(self,t):
         '''asignacion_instr     : ID IGUAL expression'''
-        t[0] = Declaration(t[1], t[3], t.lineno(1), t.lexpos(0))
+        #t[0] = Declaration(t[1], t[3], t.lineno(1), t.lexpos(0))
+        t[0]=Declaracion(t[1].lower(),t.lineno(1),self.find_column(self.input,t.slice[2]),t[3])
 
-    def p_definicion_asignacion_instr(t):
-        '''definicion_asignacion_instr  : ID  DOSP tipo IGUAL expression'''
+    def p_definicion_asignacion_instr(self,t):
+        '''definicion_asignacion_instr  : ID  DOSPUNTOS tipo IGUAL expression'''
         t[0] = Declaration(t[1], t[5], t.lineno(1), t.lexpos(0))
 
-    def p_asignacion_arreglo_instr(t):
+    def p_asignacion_arreglo_instr(self,t):
         '''asignacion_arreglo_instr     : ID index_list IGUAL expression'''
 
-    def p_call_function_instr(t):
-        '''call_function    : ID PARIZQ PARDER
-                            | ID PARIZQ exp_list PARDER'''
+    def p_call_function_instr(self,t):
+        '''call_function    : ID PARENTESIS_IZQ PARENTESIS_DER
+                            | ID PARENTESIS_IZQ exp_list PARENTESIS_DER'''
         if len(t) == 4:
             t[0] = CallFunc(t[1], [], t.lineno(1), t.lexpos(0))
         else:
             t[0] = CallFunc(t[1], t[3], t.lineno(1), t.lexpos(0))
 
-    def p_exp_list_instr(t):
+    def p_exp_list_instr(self,t):
         '''exp_list         : exp_list COMA expression
                             | expression'''
         if len(t) == 2:
@@ -400,26 +417,26 @@ class LexicoSintactico(object):
             t[1].append(t[3])
             t[0] = t[1]
         
-    def p_index_list_instr(t):
-        '''index_list       : index_list CORCHETEIZQ expression CORCHETEDER
-                            | CORCHETEIZQ expression CORCHETEDER'''
+    def p_index_list_instr(self,t):
+        '''index_list       : index_list CORCHETE_IZQ expression CORCHETE_DER
+                            | CORCHETE_IZQ expression CORCHETE_DER'''
 
-    def p_statement(t):
+    def p_statement(self,t):
         '''statement        : instrucciones'''
         t[0] = Statement(t[1], t.lineno(1), t.lexpos(0))
 
-    def p_declare_function(t):
-        '''declare_function     : DEF ID PARIZQ dec_params PARDER DOSP statement END
-                                | DEF ID PARIZQ PARDER DOSP statement END'''
+    def p_declare_function(self,t):
+        '''declare_function     : DEF ID PARENTESIS_IZQ dec_params PARENTESIS_DER DOSPUNTOS statement END
+                                | DEF ID PARENTESIS_IZQ PARENTESIS_DER DOSPUNTOS statement END'''
         if len(t) == 8:
             t[0] = Function(t[2], [], Type.NULL, t[6], t.lineno(1), t.lexpos(0))
         else:
             t[0] = Function(t[2], t[4], Type.NULL, t[7], t.lineno(1), t.lexpos(0))
 
-    def p_dec_params(t):
-        '''dec_params :   dec_params COMA ID DOSP tipo
+    def p_dec_params(self,t):
+        '''dec_params :   dec_params COMA ID DOSPUNTOS tipo
                         | dec_params COMA ID
-                        | ID DOSP tipo
+                        | ID DOSPUNTOS tipo
                         | ID'''
         if len(t) == 2:
             t[0] = [Param(t[1],Type.STRING,t.lineno(1), t.lexpos(0))]
@@ -431,34 +448,34 @@ class LexicoSintactico(object):
         else:
             t[0] = t[1].append(Param(t[3],t[5],t.lineno(1), t.lexpos(0)))
 
-    def p_if_state(t):
-        '''if_state     : IF expression DOSP statement END
-                        | IF expression DOSP statement ELSE DOSP statement END
-                        | IF expression DOSP statement else_if_list END'''
+    def p_if_state(self,t):
+        '''if_state     : IF expression DOSPUNTOS statement END
+                        | IF expression DOSPUNTOS statement ELSE DOSPUNTOS statement END
+                        | IF expression DOSPUNTOS statement else_if_list END'''
         
 
-    def p_else_if_list(t):
-        '''else_if_list     : ELIF expression DOSP statement
-                            | ELIF expression DOSP statement ELSE statement
-                            | ELIF expression DOSP statement else_if_list'''
+    def p_else_if_list(self,t):
+        '''else_if_list     : ELSEIF expression DOSPUNTOS statement
+                            | ELSEIF expression DOSPUNTOS statement ELSE statement
+                            | ELSEIF expression DOSPUNTOS statement else_if_list'''
 
-    def p_while_state(t):
-        '''while_state      : WHILE expression DOSP statement END'''
+    def p_while_state(self,t):
+        '''while_state      : WHILE expression DOSPUNTOS statement END'''
         t[0] = While(t[2], t[4], t.lineno(1), t.lexpos(0))
 
-    def p_for_state(t):
-        '''for_state        : FOR ID IN expression DOSP expression DOSP statement END
-                            | FOR ID IN expression DOSP statement END'''
+    def p_for_state(self,t):
+        '''for_state        : FOR ID IN expression DOSPUNTOS expression DOSPUNTOS statement END
+                            | FOR ID IN expression DOSPUNTOS statement END'''
                         
-    def p_break(t):
+    def p_break(self,t):
         '''break_state      : BREAK'''
         t[0] = Break(t.lineno(1), t.lexpos(0))
 
-    def p_continue(t):
+    def p_continue(self,t):
         '''continue_state      : CONTINUE'''
         t[0] = Continue(t.lineno(1), t.lexpos(0))
 
-    def p_return(t):
+    def p_return(self,t):
         '''return_state     : RETURN
                             | RETURN expression'''
         if(len(t) == 2):
@@ -495,16 +512,14 @@ class LexicoSintactico(object):
         self.input=data
         instrucciones = self.parser.parse(data) #? ARBOL AST
         
-        ast = arbol(instrucciones)
-        TSGlobal = tabla_simbolos(None,"Global")
+        ast = Arbol(instrucciones)
+        TSGlobal = TablaSimbolos(None,"Global")
         ast.setTSglobal(TSGlobal)
         
         
         for error in self.errores:    #? CAPTURA DE ERRORES LEXICOS Y SINTACTICOS
             ast.Errores.append(error)
             ast.updateConsola(error.toString())
-
-        
 
         instrucciones=ast.getInstrucciones()
         if instrucciones==None:

@@ -1,0 +1,100 @@
+digraph G {
+bgcolor="blue:green" style="filled"
+node [shape=record fillcolor="blue:brown" style="filled" gradientangle=180]
+a0 [label=<
+<TABLE border="10" cellspacing="10" cellpadding="10" style="rounded" bgcolor="/rdylgn11/1:/rdylgn11/11" gradientangle="315">
+<TR>
+<TD border="3" colspan="7" bgcolor="/rdylgn11/4:/rdylgn11/5">Reporte de Tabla de simbolos</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Identificador</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Tipo</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Tipo dato</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Entorno</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Valor</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Fila</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Columna</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"a"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Variable"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"TIPO.ENTERO"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Global"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"123"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"1"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"2"</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"b"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Variable"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"TIPO.ENTERO"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Global"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"246"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"1"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"2"</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"c"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Variable"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"TIPO.ENTERO"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Global"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"5"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"1"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"2"</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"a1"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Variable"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"TIPO.ENTERO"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Global"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"2"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"1"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"3"</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"d"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Variable"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"TIPO.CADENA"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Global"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Hola"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"1"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"2"</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"f"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Variable"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"TIPO.CADENA"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Global"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"bien y tu?"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"1"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"2"</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"h"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Variable"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"TIPO.BOOLEANO"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Global"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"False"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"1"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"3"</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"i"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Variable"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"TIPO.BOOLEANO"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Global"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"True"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"1"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"3"</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"m"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Variable"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"TIPO.BOOLEANO"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"Global"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"False"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"1"</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">"3"</TD>
+</TR>
+</TABLE>>];
+}

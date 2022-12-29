@@ -6,8 +6,8 @@ class MyLex(object):
         "str" :"STRING",
         "int" : "INT",
         "float" : "FLOAT",
-        "True" : "TRUE",
-        "False" : "FALSE",
+        "true" : "TRUE",
+        "false" : "FALSE",
         "if" : "IF",
         "elif" : "ELSEIF",
         "else" : "ELSE",
@@ -59,7 +59,10 @@ class MyLex(object):
         "MENOR_IGUAL_QUE",
         "MAYOR_IGUAL_QUE",
         "IGUAL_QUE",
-        "DIFERENTE_QUE"
+        "DIFERENTE_QUE",
+        "COMILLAS",
+        "ESPACIO",
+        "NORMAL"
     ] + list(reservadas.values())
 
     #tokens
@@ -87,6 +90,7 @@ class MyLex(object):
     t_MAYOR_IGUAL_QUE = r'>='
     t_IGUAL_QUE= r'=='
     t_DIFERENTE_QUE = r'!='
+    t_COMILLAS = r'\"'
 
     def t_ID(self,t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'
@@ -95,43 +99,41 @@ class MyLex(object):
         return t
 
     def t_CADENA(self,t):
-        r'\".*?\"'
+        #r'\".*?\"'
+        r'\"(\\[nN]|\\\\|\\\*|\\[tT]|\\\'|\\\"|[^\\\'])*?\"'
         # Se quitan comillas - 1
-        t.value = t.value[1:-1] 
+        #t.value = t.value[1:-1] 
         return t
 
     def t_ENTERO(self,t):
         r'\d+'
-        try:
-            t.value = int(t.value)
-        except ValueError:
-            print("Integer value too large %d", t.value)
-            t.value = 0
         return t
 
     def t_DECIMAL(self,t):
         r'\d+\.\d+'
-        try:
-            t.value = float(t.value)
-        except ValueError:
-            print("Float value too large %d", t.value)
-            t.value = 0
         return t
 
     # Comentario de múltiples líneas #= .. =#
 
     def t_COMENTARIO_MULTILINEA(self,t):
         r'\#=(.|\n)*?=\#'
-        t.lexer.lineno += t.value.count('\n')
 
     # Comentario simple # ...
 
     def t_COMENTARIO_SIMPLE(self,t):
         r'\#.*\n'
-        t.lexer.lineno += 1
 
     # Caracteres ignorados
-    t_ignore = " \t"
+    
+    def t_ESPACIO(self,t):
+        r'\s'
+        return t
+
+    def t_NORMAL(self,t): #LEXICOS
+        r'.'
+        return t
+
+
 
     def t_error(self,t): #LEXICOS
         print('caracter no reconocido: ' + str(t.value[0]))

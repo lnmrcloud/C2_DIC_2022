@@ -1,10 +1,10 @@
-
 from tkinter import *
 from tkinter import messagebox, filedialog, scrolledtext, ttk, WORD
 import os
+os.environ["PATH"] += os.pathsep + 'C:\\Program Files\\Graphviz\\bin'
 
 from .Analisis_lexico.analisis_lexico import MyLex
-#from .Interprete.AnalisadorLexicoYSintactico import LexicoSintactico
+from .Interprete.analizador_lexico_sintactico import LexicoSintactico
 
 # RUTAICONOS SE ENCUENTRA EN EL ARCHIVO __init__.py EN LA CARPETA ICONOS
 from .assets.Iconos import RUTAICONOS
@@ -76,7 +76,7 @@ def GuardarComo():  # GUARDAR COMO
 
 def Info(): # INFORMACION MIA
     messagebox.showinfo(title="Informacion",
-                        message="Frederick Jonathan Faugier Pinto 201602842")
+                        message="Luis Noe Martinez Rivera 201313997")
 
 
 # FUNCIONALES REPORTES  ----------------------------------------------------------------------------------------------------------------------
@@ -166,7 +166,7 @@ def Interpretar():
     TextArea2.delete(1.0, END)
     #? LLAMAMOS A LA CLASE QUE REALIZARA EL ANALISIS 
     
-    #Analizador = LexicoSintactico()
+    Analizador = LexicoSintactico()
     
     Consola = Analizador.Analizar(input)
 
@@ -286,10 +286,7 @@ MenuReportes.add_command(label="Tabla de simbolos",command=AbrirReporteTablaSimb
 #* SUBMENU AYUDA
 MenuAyuda = Menu(menubar, tearoff=0, background="gray7", foreground="white")
 menubar.add_cascade(label="Ayuda", menu=MenuAyuda)
-MenuAyuda.add_command(label="Manual de Usuario")
-MenuAyuda.add_command(label="Manual Tecnico")
 MenuAyuda.add_command(label="Info", command=Info)
 #! TERMINA SECCION DEL MENU
-
 
 ventana.mainloop()

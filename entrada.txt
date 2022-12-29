@@ -1,12 +1,34 @@
-a = 123
-b = 123 + 123
-c = 321 / 123
-d = "hola"
-e = "hOLa" * 3
-f = "hola" + "buenas";
-g = 123.123 * 123.321
-h = False
-i = True
+a=123
+b=123+123
+c=10-5
+a1=1*2
+d="Hola"
+f="bien y tu?"
+print("Hola que tal")
+print(f)
+print(a)
+print(b)
+print(c)
+print(a1)
+h = false
+i = true
+m = 123 <= 3
+print(h)
+print(i)
+print(m)
+print("Lower de d:")
+print(lower(d))
+print("Upper de d:")
+print(upper(d))
+print("Lenght de d:")
+print(len(d))
+
+
+#j = (false or true and false) or (true and (true or false))
+#e = "hOLa" * 3
+#f = "hola" + "buenas";
+#g=123.122*124.32
+
 j = (False or True and False) or (True and (True or False))
 k = 4 ** 3
 l = 5 % 2

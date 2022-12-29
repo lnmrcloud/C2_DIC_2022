@@ -1,0 +1,24 @@
+digraph G {
+bgcolor="blue:green" style="filled"
+node [shape=record fillcolor="blue:brown" style="filled" gradientangle=180]
+a0 [label=<
+<TABLE border="10" cellspacing="10" cellpadding="10" style="rounded" bgcolor="/rdylgn11/1:/rdylgn11/11" gradientangle="315">
+<TR>
+<TD border="3" colspan="5" bgcolor="/rdylgn11/4:/rdylgn11/5">Reporte de errores</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">No.</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Tipo</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Descripcion</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Fila</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Columna</TD>
+</TR>
+<TR>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">1</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Sintactico</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">Error sintactico en )</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">1</TD>
+<TD border="3"  bgcolor="/rdylgn11/4:/rdylgn11/5">14</TD>
+</TR>
+</TABLE>>];
+}
